@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.20617.1 PREVIEW
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterSample", "TwitterSample\TwitterSample.csproj", "{9F136021-DE2F-482A-8B6F-C117776FD5EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterSample.Tests", "\\vmware-host\shared folders\Documents\Visual Studio 2013\Projects\TwitterSample\TwitterSample.Tests\TwitterSample.Tests.csproj", "{D1BD8C66-981B-4255-8F67-2B468624363F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F136021-DE2F-482A-8B6F-C117776FD5EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F136021-DE2F-482A-8B6F-C117776FD5EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F136021-DE2F-482A-8B6F-C117776FD5EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F136021-DE2F-482A-8B6F-C117776FD5EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1BD8C66-981B-4255-8F67-2B468624363F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1BD8C66-981B-4255-8F67-2B468624363F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1BD8C66-981B-4255-8F67-2B468624363F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1BD8C66-981B-4255-8F67-2B468624363F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
