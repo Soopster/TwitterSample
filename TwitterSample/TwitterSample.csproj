@@ -176,6 +176,7 @@
     <Compile Include="Models\TwitterStreamViewModel.cs" />
     <Compile Include="Ninject.Mvc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ITwitterStreamService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
