@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using Microsoft.AspNet.SignalR;
+using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Common;
 using System;
@@ -6,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TwitterSample.Hubs;
+using IDependencyResolver = System.Web.Mvc.IDependencyResolver;
 
 namespace Ninject.Mvc
 {
@@ -51,7 +54,7 @@ namespace Ninject.Mvc
         {
             public override void Load()
             {
-                //Bind<IRepository>().To<LinqToSqlRepository>();
+                //Bind<IService>().To<Service>();
             }
         }
 
@@ -71,12 +74,38 @@ namespace Ninject.Mvc
         {
             _resolver = new NinjectResolver(modules);
             DependencyResolver.SetResolver(_resolver);
+            GlobalHost.DependencyResolver = new NinjectDependencyResolver(_resolver.Kernel);
         }
 
         //Manually Resolve Dependencies
         public static T Resolve<T>()
         {
             return _resolver.Kernel.Get<T>();
+        }
+    }
+
+    public class NinjectDependencyResolver : DefaultDependencyResolver
+    {
+        private readonly IKernel _kernel;
+
+        public NinjectDependencyResolver(IKernel kernel)
+        {
+            if (kernel == null)
+            {
+                throw new ArgumentNullException("kernel");
+            }
+
+            _kernel = kernel;
+        }
+
+        public override object GetService(Type serviceType)
+        {
+            return _kernel.TryGet(serviceType) ?? base.GetService(serviceType);
+        }
+
+        public override IEnumerable<object> GetServices(Type serviceType)
+        {
+            return _kernel.GetAll(serviceType).Concat(base.GetServices(serviceType));
         }
     }
 }

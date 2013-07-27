@@ -7,6 +7,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
+using Microsoft.AspNet.SignalR;
 using Ninject.Mvc;
 using TwitterSample.App_Start;
 
@@ -19,12 +20,11 @@ namespace TwitterSample
         {
             // Code that runs on application startup
             // Register the default hubs route: ~/signalr
+            NinjectContainer.RegisterModules(NinjectModules.Modules);
             RouteTable.Routes.MapHubs();
 
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            NinjectContainer.RegisterModules(NinjectModules.Modules);
         }
 
         void Application_End(object sender, EventArgs e)
