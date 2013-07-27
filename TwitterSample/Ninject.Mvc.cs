@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TwitterSample.Hubs;
+using TwitterSample.Services;
 using IDependencyResolver = System.Web.Mvc.IDependencyResolver;
 
 namespace Ninject.Mvc
@@ -54,7 +55,7 @@ namespace Ninject.Mvc
         {
             public override void Load()
             {
-                //Bind<IService>().To<Service>();
+                //Bind<ITwitterStreamService>().To<ITwitterStreamService>();
             }
         }
 

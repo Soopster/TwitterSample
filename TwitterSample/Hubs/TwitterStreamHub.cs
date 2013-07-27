@@ -22,9 +22,18 @@ namespace TwitterSample.Hubs
             _twitterStreamService = twitterStreamService;
         }
 
-        public void GetTweets()
+        public IEnumerable<TweetStream> GetTweets(string[] ids)
         {
-            Clients.All.streamTweets("Test1234");
+            if (ids == null)
+            {
+                throw new ArgumentNullException("ids");
+            }
+
+            //Clients.All.streamTweets("Test1234");
+            var twitterIds = new List<string>(ids);
+            var tweetStream = _twitterStreamService.GetTweetsById(twitterIds);
+
+            return tweetStream;
         }
     }
 }
