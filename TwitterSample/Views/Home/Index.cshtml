@@ -4,6 +4,9 @@
     ViewBag.Title = "Twitter Stream";
 }
 
+<span id="hello">
+    
+</span>
 <div class="row">
     <div class="span4">
         <h2>@@pay_by_phone</h2>
@@ -22,3 +25,8 @@
        
     </div>
 </div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/twitterstream")
+}

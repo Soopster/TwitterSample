@@ -17,6 +17,9 @@ namespace TwitterSample.App_Start
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
                       "~/Scripts/jquery.signalR-{version}.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/twitterstream").Include(
+          "~/Scripts/twitterstream.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
