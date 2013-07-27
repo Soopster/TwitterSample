@@ -6,6 +6,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
+using Ninject.Mvc;
 
 namespace TwitterSample
 {
@@ -15,8 +16,12 @@ namespace TwitterSample
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
+            // Register the default hubs route: ~/signalr
+            RouteTable.Routes.MapHubs();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);            
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            NinjectContainer.RegisterModules(NinjectModules.Modules);
         }
 
         void Application_End(object sender, EventArgs e)
