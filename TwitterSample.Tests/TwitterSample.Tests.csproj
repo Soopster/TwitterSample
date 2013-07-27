@@ -65,10 +65,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Unit\TwitterStreamServiceTests.cs" />
     <Compile Include="Unit\TwitterStreamHubTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ContractAssert.cs" />
     <Compile Include="Utils\ExceptionAssert.cs" />
+    <Compile Include="Utils\MoqExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:\Dev\TwitterSample\TwitterSample\TwitterSample.csproj">

@@ -173,10 +173,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\TwitterStreamHub.cs" />
-    <Compile Include="Models\TwitterStreamViewModel.cs" />
     <Compile Include="Ninject.Mvc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ITwitterService.cs" />
     <Compile Include="Services\ITwitterStreamService.cs" />
+    <Compile Include="Models\TweetContent.cs" />
+    <Compile Include="Models\TweetStreamViewModel.cs" />
+    <Compile Include="Services\TwitterStreamService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

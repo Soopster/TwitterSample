@@ -1,13 +1,10 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TwitterSample.Services
 {
     public interface ITwitterStreamService
     {
-        IList<TweetStream> GetTweetsById(List<string> twitterIds);
-    }
-
-    public class TweetStream
-    {
+        Task<IList<TweetStreamViewModel>> GetTweetsByIdAsync(List<string> twitterIds);
     }
 }

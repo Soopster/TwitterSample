@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -22,7 +23,7 @@ namespace TwitterSample.Hubs
             _twitterStreamService = twitterStreamService;
         }
 
-        public IEnumerable<TweetStream> GetTweets(string[] ids)
+        public async Task<IEnumerable<TweetStreamViewModel>> GetTweets(string[] ids)
         {
             if (ids == null)
             {
@@ -31,7 +32,7 @@ namespace TwitterSample.Hubs
 
             //Clients.All.streamTweets("Test1234");
             var twitterIds = new List<string>(ids);
-            var tweetStream = _twitterStreamService.GetTweetsById(twitterIds);
+            var tweetStream = await _twitterStreamService.GetTweetsByIdAsync(twitterIds);
 
             return tweetStream;
         }

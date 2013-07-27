@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.Language;
+using Moq.Language.Flow;
 using TwitterSample.Hubs;
 using TwitterSample.Services;
 using TwitterSample.Tests.Utils;
@@ -37,22 +40,22 @@ namespace TwitterSample.Tests
         public class TheGetTweetsMethod
         {
             [TestMethod]
-            public void WillReturnAListOfTweetsWhenCalledWithIds()
+            public async Task WillReturnAListOfTweetsWhenCalledWithIds()
             {
                 // Arranage
                 var mockTwitterStreamService = new Mock<ITwitterStreamService>();
-                var twitterIds = new List<string> { "test1", "test2" };
-                var tweetStreams = new List<TweetStream>(){new TweetStream(), new TweetStream()};
+                var twitterIds = new List<string> { "@test1", "@test2" };
+                var tweetStreamViewModels = new List<TweetStreamViewModel>() { new TweetStreamViewModel(), new TweetStreamViewModel() };
 
-                mockTwitterStreamService.Setup(x => x.GetTweetsById(twitterIds)).Returns(tweetStreams);
+                mockTwitterStreamService.Setup(x => x.GetTweetsByIdAsync(twitterIds)).ReturnsAsync(tweetStreamViewModels);
 
                 var sut = GetTestTwitterStreamHub(mockTwitterStreamService: mockTwitterStreamService);
 
                 // Act
-                var tweetStream = sut.GetTweets(twitterIds.ToArray());
+                var tweetStream = await sut.GetTweets(twitterIds.ToArray());
 
                 // Assert
-                mockTwitterStreamService.Verify(x => x.GetTweetsById(twitterIds));
+                mockTwitterStreamService.Verify(x => x.GetTweetsByIdAsync(twitterIds));
 
                 Assert.IsNotNull(tweetStream);
                 Assert.IsTrue(tweetStream.Count() == 2);
