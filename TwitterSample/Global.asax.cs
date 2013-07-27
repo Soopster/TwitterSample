@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
 using Ninject.Mvc;
+using TwitterSample.App_Start;
 
 namespace TwitterSample
 {
@@ -20,6 +22,7 @@ namespace TwitterSample
             RouteTable.Routes.MapHubs();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             NinjectContainer.RegisterModules(NinjectModules.Modules);
         }
