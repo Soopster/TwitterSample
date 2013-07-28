@@ -183,6 +183,5 @@ namespace TwitterSample.Tests
                 Assert.IsTrue(tweetStreamViewModel[0].NumberOfMentionsOfOthers == 4, "Expected 4 Number Of Mentions");
             }
         }
-
     }
 }
