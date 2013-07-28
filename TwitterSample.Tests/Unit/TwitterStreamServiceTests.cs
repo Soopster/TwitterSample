@@ -7,6 +7,7 @@ using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TwitterSample.Hubs;
+using TwitterSample.Models;
 using TwitterSample.Services;
 using TwitterSample.Tests.Utils;
 
@@ -32,7 +33,7 @@ namespace TwitterSample.Tests
 
         protected static Tweet GetTestTweet()
         {
-            return new Tweet(DateTime.Now);
+            return new Tweet(DateTime.Now, "TestAccount", "Test Tweet");
         }
 
         [TestClass]
@@ -81,8 +82,10 @@ namespace TwitterSample.Tests
                 // Arrange
                 var mockTwitterService = new Mock<ITwitterService>();
                 var twitterIds = new List<string> { "@test1", "@test2" };
-                var tweets1 = new List<Tweet>() { GetTestTweet(), GetTestTweet() };
-                var tweets2 = new List<Tweet>() { GetTestTweet(), GetTestTweet() };
+                Tweet testTweet = GetTestTweet();
+
+                var tweets1 = new List<Tweet>() { testTweet, testTweet };
+                var tweets2 = new List<Tweet>() { testTweet, testTweet };
 
                 mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0])).ReturnsAsync(tweets1);
                 mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[1])).ReturnsAsync(tweets2);
@@ -94,6 +97,10 @@ namespace TwitterSample.Tests
 
                 // Assert
                 Assert.IsTrue(tweetStreamViewModel.Count == 2, "Expected 2 ViewModels for 2 Unique IDs");
+                Assert.IsTrue(tweetStreamViewModel[0].Contents.Count == 2, "Expected 2 Tweets");
+                Assert.IsTrue(tweetStreamViewModel[0].Contents[0].TweetTime == testTweet.Time.ToString(CultureInfo.InvariantCulture), "Expected tweet time to be mapped");
+                Assert.IsTrue(tweetStreamViewModel[0].Contents[0].Tweet == testTweet.Content, "Expected tweet content to be mapped");
+                Assert.IsTrue(tweetStreamViewModel[0].TwitterAccount == testTweet.AccountId, "Expected tweet account to be mapped");
             }
 
             [TestMethod]
@@ -107,9 +114,9 @@ namespace TwitterSample.Tests
                 var threeDaysAgo = DateTime.Now.AddDays(-3);
 
                 var tweets = new List<Tweet>() { 
-                    new Tweet(twoDaysAgo), 
-                    new Tweet(threeDaysAgo), 
-                    new Tweet(now) 
+                    new Tweet(twoDaysAgo, "Test1", "This is a test tweet 1"), 
+                    new Tweet(threeDaysAgo, "Test1", "This is a test tweet 2"), 
+                    new Tweet(now, "Test1", "This is a test tweet 3") 
                 };
                 
                 mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0])).ReturnsAsync(tweets);
@@ -124,6 +131,56 @@ namespace TwitterSample.Tests
                 Assert.IsTrue(tweetStreamViewModel[0].Contents[0].TweetTime == now.ToString(CultureInfo.InvariantCulture));
                 Assert.IsTrue(tweetStreamViewModel[0].Contents[1].TweetTime == twoDaysAgo.ToString(CultureInfo.InvariantCulture));
                 Assert.IsTrue(tweetStreamViewModel[0].Contents[2].TweetTime == threeDaysAgo.ToString(CultureInfo.InvariantCulture));
+            }
+
+            [TestMethod]
+            public async Task WillReturnAViewModelThatAggregatesTotalNumberOfTweets()
+            {
+                // Arrange
+                var mockTwitterService = new Mock<ITwitterService>();
+                var twitterIds = new List<string> { "@test1" };
+              
+                var tweets = new List<Tweet>() { 
+                    GetTestTweet(),
+                    GetTestTweet(),
+                    GetTestTweet()
+                };
+
+                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0])).ReturnsAsync(tweets);
+
+                var sut = GetTestTwitterStreamService(mockTwitterService, null);
+
+                // Act 
+                var tweetStreamViewModel = await sut.GetTweetsByIdAsync(twitterIds);
+
+                // Assert
+                Assert.IsTrue(tweetStreamViewModel.Count == 1, "Expected 1 ViewModel");
+                Assert.IsTrue(tweetStreamViewModel[0].NumberOfTweets == 3, "Expected 3 Number Of Tweets");
+            }
+
+            [TestMethod]
+            public async Task WillReturnAViewModelThatAggregatesTheMentionsOfOtherUsers()
+            {
+                // Arrange
+                var mockTwitterService = new Mock<ITwitterService>();
+                var twitterIds = new List<string> { "@test1" };
+
+                var tweets = new List<Tweet>() { 
+                    new Tweet(DateTime.Now, "Test1", "This is a mention @test1 @test2"), 
+                    new Tweet(DateTime.Now, "Test1", "This is a test"), 
+                    new Tweet(DateTime.Now, "Test1", "This is a test mention @test1 @test1 @test4 @test5 @test6") 
+                };
+
+                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0])).ReturnsAsync(tweets);
+
+                var sut = GetTestTwitterStreamService(mockTwitterService, null);
+
+                // Act 
+                var tweetStreamViewModel = await sut.GetTweetsByIdAsync(twitterIds);
+
+                // Assert
+                Assert.IsTrue(tweetStreamViewModel.Count == 1, "Expected 1 ViewModel");
+                Assert.IsTrue(tweetStreamViewModel[0].NumberOfMentionsOfOthers == 4, "Expected 4 Number Of Mentions");
             }
         }
 

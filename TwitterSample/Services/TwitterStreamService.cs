@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Hubs;
+using TwitterSample.Models;
 using TwitterSample.Services.Mapping;
 
 namespace TwitterSample.Services
