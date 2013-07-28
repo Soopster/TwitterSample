@@ -179,6 +179,7 @@
     <Compile Include="Services\ITwitterStreamService.cs" />
     <Compile Include="Models\TweetContent.cs" />
     <Compile Include="Models\TweetStreamViewModel.cs" />
+    <Compile Include="Services\Mapping\ViewModelMappings.cs" />
     <Compile Include="Services\TwitterStreamService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Hubs;
+using TwitterSample.Services.Mapping;
 
 namespace TwitterSample.Services
 {
@@ -39,18 +40,18 @@ namespace TwitterSample.Services
             foreach (var twitterId in twitterIds)
             {
                 TweetStreamViewModel tweetStreamViewModel = null;
+                List<Tweet> tweets = null;
                 if (!this._tweets.ContainsKey(twitterId))
                 {
-                    var tweets = await _twitterService.GetTimeLineByIdAsync(twitterId);
+                    tweets = await _twitterService.GetTimeLineByIdAsync(twitterId);
                     _tweets.TryAdd(twitterId, tweets);
-                    
+                    tweetStreamViewModel = tweets.MapToTweetStreamViewModel(); 
                     tweetStreamViewModels.Add(tweetStreamViewModel);
                 }
                 else
-                {
-                    List<Tweet> tweets = null;
+                {   
                     this._tweets.TryGetValue(twitterId, out tweets);
-
+                    tweetStreamViewModel = tweets.MapToTweetStreamViewModel();
                     tweetStreamViewModels.Add(tweetStreamViewModel);
                 }
             }
