@@ -22,6 +22,11 @@ namespace TwitterSample.Services
 
         public TwitterService(ITwitterAuthService twitterAuthService, HttpClient httpClient = null)
         {
+            if (twitterAuthService == null)
+            {
+                throw new ArgumentNullException("twitterAuthService");
+            }
+
             _twitterAuthService = twitterAuthService;
             _httpClient = httpClient ?? new HttpClient();
         }
@@ -71,7 +76,7 @@ namespace TwitterSample.Services
                 //new Uri(string.Format("https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name={0}", twitterId));
             var dateSinceString = tweetsSince.ToString("yyyy-MM-dd");
 
-            var requestUri = new Uri(string.Format("https://api.twitter.com/1.1/search/tweets.json?q=%3Dfrom%3A{0}%20since%3A{1}", twitterId, dateSinceString));
+            var requestUri = new Uri(string.Format("https://api.twitter.com/1.1/search/tweets.json?q=%3Dfrom%3A{0}%20since%3A{1}&count=100", twitterId, dateSinceString));
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
 
             httpRequestMessage.Headers.Add("Authorization", "Bearer " + _accessToken);

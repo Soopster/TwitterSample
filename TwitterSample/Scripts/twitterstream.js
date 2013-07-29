@@ -61,7 +61,7 @@ $(function() {
     $.connection.hub.start().done(function () {
         
         stream.server.getTweets(["@pay_by_phone", "@PayByPhone", "@PayByPhone_UK"]).done(function(tweetStreams) {
-            $("#loading").remove();
+            $("#loading").remove()
             
             fillTemplate(tweetStreams);
         });
