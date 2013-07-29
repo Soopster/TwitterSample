@@ -101,7 +101,7 @@ namespace TwitterSample.Tests.Unit
                     Assert.IsNotNull(result);
                     Assert.IsTrue(result.Count == 1);
                     Assert.IsTrue(result[0].AccountId == "Tester");
-                    Assert.IsTrue(result[0].Content == "Test Tweet");
+                    Assert.IsTrue(result[0].Content == "Test tweet");
                 } 
             }
         }

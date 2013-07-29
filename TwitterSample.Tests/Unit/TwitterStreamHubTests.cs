@@ -62,13 +62,20 @@ namespace TwitterSample.Tests
             }
 
             [TestMethod]
-            public void WillThrowWhenCalledWithNoIDs()
+            public async Task WillThrowWhenCalledWithNoIDs()
             {
                 // Arranage
                 var sut = GetTestTwitterStreamHub();
-
+               
                 // Assert
-                ContractAssert.ThrowsArgNull(() => sut.GetTweets(null), "ids");
+                try
+                {
+                    await sut.GetTweets(null);
+                }
+                catch (ArgumentNullException ex)
+                {
+                    Assert.IsTrue(ex.ParamName == "ids");
+                }
             }
         }
 
