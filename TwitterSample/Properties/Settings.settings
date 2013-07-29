@@ -9,10 +9,10 @@
       <Value Profile="(Default)">yBQPXj9bH2NpJ6Y0ns2cHd5l8lL5G5C00JUTm5A9KcU</Value>
     </Setting>
     <Setting Name="consumerKey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">MlWMzBRVDnNq67r066AeMQ</Value>
+      <Value Profile="(Default)">O44DgOFQ7Ps8jyQMU3SWsA</Value>
     </Setting>
     <Setting Name="consumerKeySecret" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">D53me4PabUmpp9eqwN1Cyifc3KhBlWA2afKhuqaMcs</Value>
+      <Value Profile="(Default)">3PwT7czs7xnxjvgH3laPFz1kMlWCxfQWkwr10YQ</Value>
     </Setting>
   </Settings>
 </SettingsFile>

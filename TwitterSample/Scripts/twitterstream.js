@@ -23,7 +23,7 @@ $(function() {
     var stream = $.connection.twitterStreamHub;
     // Create a function that the hub can call back to display messages.
     var rowTemplate = '<div class="col-lg-4"> ' +
-        '<div class ="panel">'+
+        '<div class ="panel tweetStreams">' +
         '<div class="panel panel-info">'+
         '<div class="panel-heading">'+
         '<h3>{TwitterAccount}</h3> ' +
@@ -40,9 +40,20 @@ $(function() {
         '<h4 class="list-group-item-heading"><span class="label label-info">{TweetTime}</span></h4>' +
         '<p class="list-group-item-text">{Tweet}</p>' +
         '</a>';
-    
-    stream.client.streamTweets = function(message) {
-        $("#hello").html(message);
+
+    var fillTemplate = function(tweetStreams) {
+        $.each(tweetStreams, function() {
+            var $row = $(".row").append(rowTemplate.supplant(this));
+            $.each(this.Contents, function() {
+                $(tweetTemplate.supplant(this)).hide().appendTo(".list-group:last", $row).fadeIn(1000);
+            });
+        });
+    };
+
+    stream.client.updateStream = function(tweetStreams) {
+        $(".row").empty();
+
+        fillTemplate(tweetStreams);
     };
 
     // Get the user name and store it to prepend to messages.
@@ -52,14 +63,7 @@ $(function() {
         stream.server.getTweets(["@pay_by_phone", "@PayByPhone", "@PayByPhone_UK"]).done(function(tweetStreams) {
             $("#loading").remove();
             
-            $.each(tweetStreams, function () {
-                var $row = $(".row").append(rowTemplate.supplant(this));
-                $.each(this.Contents, function() {
-                    $(".list-group:last", $row).append(tweetTemplate.supplant(this));
-                });
-                
-                //alert(this.TwitterAccount + ' ' + this.NumberOfTweets);
-            });
+            fillTemplate(tweetStreams);
         });
     });
 });

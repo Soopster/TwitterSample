@@ -43,7 +43,7 @@ namespace TwitterSample.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MlWMzBRVDnNq67r066AeMQ")]
+        [global::System.Configuration.DefaultSettingValueAttribute("O44DgOFQ7Ps8jyQMU3SWsA")]
         public string consumerKey {
             get {
                 return ((string)(this["consumerKey"]));
@@ -52,7 +52,7 @@ namespace TwitterSample.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D53me4PabUmpp9eqwN1Cyifc3KhBlWA2afKhuqaMcs")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3PwT7czs7xnxjvgH3laPFz1kMlWCxfQWkwr10YQ")]
         public string consumerKeySecret {
             get {
                 return ((string)(this["consumerKeySecret"]));
