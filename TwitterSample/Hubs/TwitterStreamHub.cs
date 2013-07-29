@@ -31,7 +31,6 @@ namespace TwitterSample.Hubs
                 throw new ArgumentNullException("ids");
             }
 
-            //Clients.All.streamTweets("Test1234");
             var twitterIds = new List<string>(ids);
             var tweetStream = await _twitterStreamService.GetTweetsByIdAsync(twitterIds);
 

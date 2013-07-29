@@ -1,6 +1,6 @@
 ﻿
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,24 +10,18 @@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Twitter Stream", "Index", "Home", null, new { @class = "brand" })
-                
-            </div>
+        <div class="container">
+
+            @Html.ActionLink("Twitter Stream", "Index", "Home", null, new { @class = "navbar-brand" })
+
         </div>
     </div>
     <div class="container">
         @RenderBody()
         <hr />
-        <footer>
+        <footer class="panel-footer">
             <p>Email: @HTMLHelpers.EmailTextBox("luke.ryan@gmail.com", "Luke Ryan")</p>
-        </footer>
+            </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

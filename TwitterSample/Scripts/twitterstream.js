@@ -22,14 +22,19 @@ $(function() {
     // Reference the auto-generated proxy for the hub.  
     var stream = $.connection.twitterStreamHub;
     // Create a function that the hub can call back to display messages.
-    var rowTemplate = '<div class="span4"> ' +
-        '<h2>{TwitterAccount}</h2> ' +
-        '<br/> ' +
-        '<h3>Tweets: <span class="label">{NumberOfTweets}</span></h3>' +
-        '<h3>Mentions Of Others: <span class="label">{NumberOfMentionsOfOthers}</span></h3>' +
+    var rowTemplate = '<div class="col-lg-4"> ' +
+        '<div class ="panel">'+
+        '<div class="panel panel-info">'+
+        '<div class="panel-heading">'+
+        '<h3>{TwitterAccount}</h3> ' +
+        '</div>'+
+        '<h4>Tweets: <span class="label">{NumberOfTweets}</span></h4>' +
+        '<h4>Mentions Of Others: <span class="label">{NumberOfMentionsOfOthers}</span></h4>' +
+        '</div>'+
         '<div class="list-group">' +
         '</div>' +
-        '</span4>';
+        '</div>' +
+        '</div>';
     
     var tweetTemplate = '<a href="#" class="list-group-item">' +
         '<h4 class="list-group-item-heading"><span class="label label-info">{TweetTime}</span></h4>' +
@@ -42,8 +47,11 @@ $(function() {
 
     // Get the user name and store it to prepend to messages.
     // Start the connection.
-    $.connection.hub.start().done(function() {
+    $.connection.hub.start().done(function () {
+        
         stream.server.getTweets(["@pay_by_phone", "@PayByPhone", "@PayByPhone_UK"]).done(function(tweetStreams) {
+            $("#loading").remove();
+            
             $.each(tweetStreams, function () {
                 var $row = $(".row").append(rowTemplate.supplant(this));
                 $.each(this.Contents, function() {
