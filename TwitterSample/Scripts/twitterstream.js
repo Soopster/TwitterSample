@@ -55,7 +55,7 @@ $(function() {
             $.each(tweetStreams, function () {
                 var $row = $(".row").append(rowTemplate.supplant(this));
                 $.each(this.Contents, function() {
-                    $(".list-group", $row).append(tweetTemplate.supplant(this));
+                    $(".list-group:last", $row).append(tweetTemplate.supplant(this));
                 });
                 
                 //alert(this.TwitterAccount + ' ' + this.NumberOfTweets);
