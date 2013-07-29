@@ -15,25 +15,28 @@ namespace TwitterSample.Tests.Unit
     [TestClass]
     public class TwitterServiceTest
     {
-        protected static TwitterService GetTestTwitterService(Mock<HttpClient> mockHttpClient = null)
+        protected static TwitterService GetTestTwitterService(Mock<ITwitterAuthService> mockTwitterAuthService = null)
         {
-            if (mockHttpClient == null)
+            if (mockTwitterAuthService == null)
             {
-                mockHttpClient = new Mock<HttpClient>();
+                mockTwitterAuthService = new Mock<ITwitterAuthService>();
             }
 
-            var sut = new TwitterService("accessToken", "accessTokenSecret", "consumerKey", "consumerKeySecret", mockHttpClient.Object);
+            var sut = new TwitterService(mockTwitterAuthService.Object);
             return sut;
         }
 
-        protected static TwitterService GetTestTwitterService(HttpClient httpClient = null)
+        protected static TwitterService GetTestTwitterService(ITwitterAuthService twitterAuthService = null, HttpClient httpClient = null)
         {
             if (httpClient == null)
             {
                 httpClient = new HttpClient();
             }
-
-            var sut = new TwitterService("accessToken", "accessTokenSecret", "consumerKey", "consumerKeySecret", httpClient);
+            if (twitterAuthService == null)
+            {
+                twitterAuthService = new TwitterAuthService("accessToken", "accessTokenSecret", "consumerKey", "consumerKeySecret", httpClient);
+            }
+            var sut = new TwitterService(twitterAuthService, httpClient);
             return sut;
         }
 
@@ -43,10 +46,7 @@ namespace TwitterSample.Tests.Unit
             [TestMethod]
             public void GivenNullParameters_ItShouldThrow()
             {
-                ContractAssert.ThrowsArgNull(() => new TwitterService(null, "accessTokenSecret", "consumerKey", "consumerKeySecret"), "accessToken");
-                ContractAssert.ThrowsArgNull(() => new TwitterService("accessToken", null, "consumerKey", "consumerKeySecret"), "accessTokenSecret");
-                ContractAssert.ThrowsArgNull(() => new TwitterService("accessToken", "accessTokenSecret", null, "consumerKeySecret"), "consumerKey");
-                ContractAssert.ThrowsArgNull(() => new TwitterService("accessToken", "accessTokenSecret", "consumerKey", null), "consumerKeySecret");
+                ContractAssert.ThrowsArgNull(() => new TwitterService(null), "twitterAuthService");
             }
         }
 
@@ -57,32 +57,39 @@ namespace TwitterSample.Tests.Unit
             public async Task WillReturnTweetsBasedOnAId()
             {
                 // Arrange
+
+                var mockTwitterAuth = new Mock<ITwitterAuthService>();
+                mockTwitterAuth.Setup(x => x.GetAccessTokenAsync()).ReturnsAsync("TestToken");
+
                 using (ShimsContext.Create())
                 {
                     var shimHttpClient = new ShimHttpClient
                     {
                         SendAsyncHttpRequestMessage = (x) =>
                         {
-                            var response = @"[{
-                                ""created_at"": ""Tue Jun 18 15:32:21 +0000 2013"",
-                                ""id"": 347013925633679360,
-                                ""id_str"": ""347013925633679361"",
-                                ""text"": ""Test tweet"",
-                                ""user"": {
-                                  ""id"": 12345,
-                                  ""id_str"": ""12345"",
-                                  ""name"": ""Test Name"",
-                                  ""screen_name"": ""Tester"",
-                                  ""utc_offset"": 28800,
-                                  ""time_zone"": ""Perth"",
-                                  ""profile_background_color"": ""131516"",
-                                  ""profile_background_image_url"": ""http://a0.twimg.com/images/themes/theme14/bg.gif"",
-                                  ""profile_image_url"": ""http://a0.twimg.com/profile_images/1.jpg""
-                                },
-                                ""favorited"": false,
-                                ""retweeted"": false,
-                                ""lang"": ""en""
-                              }]";
+                            var response = @"{
+                                ""statuses"": [{
+                                    ""created_at"": ""Tue Jun 18 15:32:21 +0000 2013"",
+                                    ""id"": 347013925633679360,
+                                    ""id_str"": ""347013925633679361"",
+                                    ""text"": ""Test tweet"",
+                                    ""user"": {
+                                      ""id"": 12345,
+                                      ""id_str"": ""12345"",
+                                      ""name"": ""Test Name"",
+                                      ""screen_name"": ""Tester"",
+                                      ""utc_offset"": 28800,
+                                      ""time_zone"": ""Perth"",
+                                      ""profile_background_color"": ""131516"",
+                                      ""profile_background_image_url"": ""http://a0.twimg.com/images/themes/theme14/bg.gif"",
+                                      ""profile_image_url"": ""http://a0.twimg.com/profile_images/1.jpg""
+                                    },
+                                    ""favorited"": false,
+                                    ""retweeted"": false,
+                                    ""lang"": ""en""
+                                }]
+                              }";
+
                             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
                             {
                                 Content = new StringContent(response)
@@ -92,7 +99,7 @@ namespace TwitterSample.Tests.Unit
                         }
                     };
 
-                    var sut = GetTestTwitterService(shimHttpClient.Instance);
+                    var sut = GetTestTwitterService(mockTwitterAuth.Object, shimHttpClient.Instance);
                     
                     // Act
                     var result = await sut.GetTimeLineByIdAsync("@test");
