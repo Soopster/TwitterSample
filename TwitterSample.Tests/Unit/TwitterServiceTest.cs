@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Fakes;
+using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Hubs;
+using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TwitterSample.Services;
@@ -17,8 +21,19 @@ namespace TwitterSample.Tests.Unit
             {
                 mockHttpClient = new Mock<HttpClient>();
             }
-            
+
             var sut = new TwitterService("accessToken", "accessTokenSecret", "consumerKey", "consumerKeySecret", mockHttpClient.Object);
+            return sut;
+        }
+
+        protected static TwitterService GetTestTwitterService(HttpClient httpClient = null)
+        {
+            if (httpClient == null)
+            {
+                httpClient = new HttpClient();
+            }
+
+            var sut = new TwitterService("accessToken", "accessTokenSecret", "consumerKey", "consumerKeySecret", httpClient);
             return sut;
         }
 
@@ -39,16 +54,56 @@ namespace TwitterSample.Tests.Unit
         public class TheGetTimeLineByIdAsyncMethod
         {
             [TestMethod]
-            public void WillReturnTweetsBasedOnAId()
+            public async Task WillReturnTweetsBasedOnAId()
             {
                 // Arrange
-                var mockHttpClient = new Mock<HttpClient>();
+                using (ShimsContext.Create())
+                {
+                    var shimHttpClient = new ShimHttpClient
+                    {
+                        GetAsyncUri = (x) =>
+                        {
+                            var response = @"[{
+                                ""created_at"": ""Tue Jun 18 15:32:21 +0000 2013"",
+                                ""id"": 347013925633679360,
+                                ""id_str"": ""347013925633679361"",
+                                ""text"": ""Test tweet"",
+                                ""user"": {
+                                  ""id"": 12345,
+                                  ""id_str"": ""12345"",
+                                  ""name"": ""Test Name"",
+                                  ""screen_name"": ""Tester"",
+                                  ""utc_offset"": 28800,
+                                  ""time_zone"": ""Perth"",
+                                  ""profile_background_color"": ""131516"",
+                                  ""profile_background_image_url"": ""http://a0.twimg.com/images/themes/theme14/bg.gif"",
+                                  ""profile_image_url"": ""http://a0.twimg.com/profile_images/1.jpg""
+                                },
+                                ""favorited"": false,
+                                ""retweeted"": false,
+                                ""lang"": ""en""
+                              }]";
+                            var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+                            {
+                                Content = new StringContent(response)
+                            };
 
-                var sut = GetTestTwitterService(mockHttpClient);
-                // Act
+                            return Task.FromResult(httpResponseMessage);
+                        }
+                    };
 
-                // Assert
-            }   
+                    var sut = GetTestTwitterService(shimHttpClient.Instance);
+                    
+                    // Act
+                    var result = await sut.GetTimeLineByIdAsync("@test");
+
+                    // Assert
+                    Assert.IsNotNull(result);
+                    Assert.IsTrue(result.Count == 1);
+                    Assert.IsTrue(result[0].AccountId == "Tester");
+                    Assert.IsTrue(result[0].Content == "Test Tweet");
+                } 
+            }
         }
     }
 }

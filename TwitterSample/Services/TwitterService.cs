@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -49,10 +51,37 @@ namespace TwitterSample.Services
             _httpClient = httpClient ?? new HttpClient();
         }
 
-        public Task<List<Tweet>> GetTimeLineByIdAsync(string twitterId)
+        public async Task<List<Tweet>> GetTimeLineByIdAsync(string twitterId)
         {
-            //dynamic timeline = System.Web.Helpers.Json.Decode(response);
-            throw new System.NotImplementedException();
+            var result = new List<Tweet>();
+
+            try
+            {
+                var requestUri = new Uri("http://www.google.com");
+                var response = await _httpClient.GetAsync(requestUri);
+
+                response.EnsureSuccessStatusCode();
+
+                var jsonResult = await response.Content.ReadAsStringAsync();
+                dynamic timeline = System.Web.Helpers.Json.Decode(jsonResult);
+
+                foreach (var timeLineTweet in timeline)
+                {
+                    var createdAt = DateTime.ParseExact(timeLineTweet.created_at, @"ddd MMM dd HH:mm:ss zzzz yyyy", CultureInfo.InvariantCulture); 
+                    var accountId = timeLineTweet.user.screen_name;
+                    var content = timeLineTweet.text;
+
+                    var tweet = new Tweet(createdAt, accountId, content);
+                    result.Add(tweet);
+                }
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
