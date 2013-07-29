@@ -12,7 +12,7 @@ namespace TwitterSample.Hubs
 {
     public class TwitterStreamHub : Hub
     {
-        private ITwitterStreamService _twitterStreamService;
+        private readonly ITwitterStreamService _twitterStreamService;
 
         public TwitterStreamHub(ITwitterStreamService twitterStreamService)
         {
