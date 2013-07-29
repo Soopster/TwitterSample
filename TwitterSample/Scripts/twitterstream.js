@@ -6,23 +6,22 @@
     });
 }(jQuery));
 
-$(function () {
+$(function() {
     // Reference the auto-generated proxy for the hub.  
     var stream = $.connection.twitterStreamHub;
     // Create a function that the hub can call back to display messages.
-    
+
     stream.client.streamTweets = function(message) {
         $("#hello").html(message);
     };
-    
+
     // Get the user name and store it to prepend to messages.
     // Start the connection.
-    $.connection.hub.start().done(function () { 
-        stream.server.getTweets();
+    $.connection.hub.start().done(function() {
+        stream.server.getTweets(["@pay_by_phone", "@PayByPhone", "@PayByPhone_UK"]).done(function(tweetStreams) {
+            $.each(tweetStreams, function() {
+                alert(this.TwitterAccount + ' ' + this.NumberOfTweets);
+            });
+        });
     });
 });
-// This optional function html-encodes messages for display in the page.
-function htmlEncode(value) {
-    var encodedValue = $('<div />').text(value).html();
-    return encodedValue;
-}

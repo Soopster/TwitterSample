@@ -61,7 +61,7 @@ namespace TwitterSample.Tests
                 foreach (var twitterId in twitterIds)
                 {
                     var id = twitterId;
-                    mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(id)).ReturnsAsync(tweets);
+                    mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(id, null)).ReturnsAsync(tweets);
                 }
 
                 var sut = GetTestTwitterStreamService(mockTwitterService, null);
@@ -72,8 +72,8 @@ namespace TwitterSample.Tests
                 await sut.GetTweetsByIdAsync(twitterIds);
 
                 // Assert
-                mockTwitterService.Verify(x => x.GetTimeLineByIdAsync(twitterIds[0]), Times.Once());
-                mockTwitterService.Verify(x => x.GetTimeLineByIdAsync(twitterIds[1]), Times.Once());
+                mockTwitterService.Verify(x => x.GetTimeLineByIdAsync(twitterIds[0], null), Times.Once());
+                mockTwitterService.Verify(x => x.GetTimeLineByIdAsync(twitterIds[1], null), Times.Once());
             }
 
             [TestMethod]
@@ -87,8 +87,8 @@ namespace TwitterSample.Tests
                 var tweets1 = new List<Tweet>() { testTweet, testTweet };
                 var tweets2 = new List<Tweet>() { testTweet, testTweet };
 
-                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0])).ReturnsAsync(tweets1);
-                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[1])).ReturnsAsync(tweets2);
+                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0], null)).ReturnsAsync(tweets1);
+                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[1], null)).ReturnsAsync(tweets2);
 
                 var sut = GetTestTwitterStreamService(mockTwitterService, null);
 
@@ -119,7 +119,7 @@ namespace TwitterSample.Tests
                     new Tweet(now, "Test1", "This is a test tweet 3") 
                 };
                 
-                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0])).ReturnsAsync(tweets);
+                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0], null)).ReturnsAsync(tweets);
               
                 var sut = GetTestTwitterStreamService(mockTwitterService, null);
 
@@ -146,7 +146,7 @@ namespace TwitterSample.Tests
                     GetTestTweet()
                 };
 
-                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0])).ReturnsAsync(tweets);
+                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0], null)).ReturnsAsync(tweets);
 
                 var sut = GetTestTwitterStreamService(mockTwitterService, null);
 
@@ -171,7 +171,7 @@ namespace TwitterSample.Tests
                     new Tweet(DateTime.Now, "Test1", "This is a test mention @test1 @test1 @test4 @test5 @test6") 
                 };
 
-                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0])).ReturnsAsync(tweets);
+                mockTwitterService.Setup(x => x.GetTimeLineByIdAsync(twitterIds[0], null)).ReturnsAsync(tweets);
 
                 var sut = GetTestTwitterStreamService(mockTwitterService, null);
 

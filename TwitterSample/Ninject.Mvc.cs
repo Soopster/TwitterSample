@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Common;
@@ -55,7 +56,9 @@ namespace Ninject.Mvc
         {
             public override void Load()
             {
-                //Bind<ITwitterStreamService>().To<ITwitterStreamService>();
+                Bind<ITwitterStreamService>().To<TwitterStreamService>().InSingletonScope().WithConstructorArgument("clients", GlobalHost.ConnectionManager.GetHubContext<TwitterStreamHub>().Clients);
+                Bind<ITwitterService>().To<TwitterService>();
+                //Bind<IHubConnectionContext>().To(GlobalHost.ConnectionManager.GetHubContext<TwitterStreamHub>().Clients);
             }
         }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace TwitterSample.Services
+namespace TwitterSample.Models
 {
     public class TweetContent
     {

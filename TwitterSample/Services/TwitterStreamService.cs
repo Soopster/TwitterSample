@@ -14,7 +14,7 @@ namespace TwitterSample.Services
     {
         private readonly ITwitterService _twitterService;
         private readonly IHubConnectionContext _clients;
-        private ConcurrentDictionary<string, List<Tweet>> _tweets;
+        private readonly ConcurrentDictionary<string, List<Tweet>> _tweets;
 
         public TwitterStreamService(ITwitterService twitterService, IHubConnectionContext clients)
         {

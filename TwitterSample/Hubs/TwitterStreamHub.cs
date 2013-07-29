@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
+using TwitterSample.Models;
 using TwitterSample.Services;
 
 namespace TwitterSample.Hubs

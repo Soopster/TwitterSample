@@ -7,6 +7,7 @@ using Moq;
 using Moq.Language;
 using Moq.Language.Flow;
 using TwitterSample.Hubs;
+using TwitterSample.Models;
 using TwitterSample.Services;
 using TwitterSample.Tests.Utils;
 

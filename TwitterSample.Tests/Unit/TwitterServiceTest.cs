@@ -61,7 +61,7 @@ namespace TwitterSample.Tests.Unit
                 {
                     var shimHttpClient = new ShimHttpClient
                     {
-                        GetAsyncUri = (x) =>
+                        SendAsyncHttpRequestMessage = (x) =>
                         {
                             var response = @"[{
                                 ""created_at"": ""Tue Jun 18 15:32:21 +0000 2013"",
