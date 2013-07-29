@@ -72,6 +72,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Acceptance\TweetStream.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TweetStream.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Acceptance\Steps\TweetStreamSteps.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Unit\TwitterServiceTest.cs" />
     <Compile Include="Unit\TwitterStreamServiceTests.cs" />
     <Compile Include="Unit\TwitterStreamHubTests.cs" />
@@ -88,13 +99,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Acceptance\TweetStream.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>TweetStream.feature.cs</LastGenOutput>
+    </None>
     <None Include="app.config" />
     <Fakes Include="Fakes\System.Net.Http.fakes" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Acceptance\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
